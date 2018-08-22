@@ -44,13 +44,14 @@ app.post('/upload', function(req, res){
     moveFile(uploadedFile, uploadedFileName)
         .then(result => fs.readFile('./src/'+ result, function(err , data){
             if(err) throw err;
-            return data;
+            else{
+                exif.metadata(data, function(err, metadata){
+                    if(err) throw err;
+                    else 
+                        console.log(metadata);
+                })
+            }
         }))
-        .then(meta => exif.metadata(meta , function(err, dataset){
-            if(err) throw err;
-            return dataset;
-        }))
-        .then(metaData => console.log(metaData))
         .catch(err => console.error(err));
 
         // .then(exifImage => exif.metadata(exifImage))

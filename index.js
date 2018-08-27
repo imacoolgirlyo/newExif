@@ -42,15 +42,10 @@ app.post('/upload', function(req, res){
     let uploadedFileName = uploadedFile.name;
 
     moveFile(uploadedFile, uploadedFileName)
-        .then(result => fs.readFile('./src/'+ result, function(err , data){
+        .then(result => fs.readFile('./src/'+ result))
+        .then(meta => exif.metadata(meta, function(err, metadata){
             if(err) throw err;
-            else{
-                exif.metadata(data, function(err, metadata){
-                    if(err) throw err;
-                    else 
-                        console.log(metadata);
-                })
-            }
+            else console.log(metadata);
         }))
         .catch(err => console.error(err));
 
